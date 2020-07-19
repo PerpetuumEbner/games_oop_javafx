@@ -25,13 +25,25 @@ public class Logic {
         boolean rst = false;
         int index = findBy(source);
         if (index != -1) {
-            Cell[] steps = figures[index].way(source, dest);
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                rst = true;
-                figures[index] = figures[index].copy(dest);
+            Cell[] steps = new Cell[0];
+            try {
+                steps = figures[index].way(source, dest);
+            } catch (Exception e) {
+                System.out.println("An error occurred while moving the shape.");
             }
+            check(steps);
+            rst = true;
         }
         return rst;
+    }
+
+    public void check(Cell[] steps) {
+        for (Cell step : steps) {
+            findBy(step);
+            if (findBy(step) != -1) {
+                System.out.println("A figure was found on the way.");
+            }
+        }
     }
 
     public void clean() {
