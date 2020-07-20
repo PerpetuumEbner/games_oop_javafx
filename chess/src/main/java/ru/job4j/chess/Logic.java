@@ -31,19 +31,25 @@ public class Logic {
             } catch (Exception e) {
                 System.out.println("An error occurred while moving the shape.");
             }
-            check(steps);
-            rst = true;
+            if (steps.length > 0 && steps[steps.length - 1].equals(dest) && check(steps)) {
+                rst = true;
+                figures[index] = figures[index].copy(dest);
+            }
         }
         return rst;
     }
 
-    public void check(Cell[] steps) {
+    public boolean check(Cell[] steps) {
+        boolean rst = true;
         for (Cell step : steps) {
             findBy(step);
             if (findBy(step) != -1) {
                 System.out.println("A figure was found on the way.");
+                rst = false;
+                break;
             }
         }
+        return rst;
     }
 
     public void clean() {
