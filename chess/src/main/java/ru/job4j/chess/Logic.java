@@ -29,7 +29,7 @@ public class Logic {
             try {
                 steps = figures[index].way(source, dest);
             } catch (Exception e) {
-                System.out.println("An error occurred while moving the shape.");
+                System.out.println(e.getMessage());
             }
             if (steps.length > 0 && steps[steps.length - 1].equals(dest) && check(steps)) {
                 rst = true;
