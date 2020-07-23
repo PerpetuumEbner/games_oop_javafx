@@ -1,5 +1,6 @@
 package job4j.tictactoe;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class Logic3T {
@@ -23,36 +24,26 @@ public class Logic3T {
         return result;
     }
 
+    public boolean isWin(Predicate<Figure3T> predicate) {
+        return fillBy(predicate, 0, 0, 1, 0)
+                || fillBy(predicate, 0, 1, 1, 0)
+                || fillBy(predicate, 0, 2, 1, 0)
+                || fillBy(predicate, 0, 0, 1, 0)
+                || fillBy(predicate, 1, 0, 0, 1)
+                || fillBy(predicate, 2, 0, 0, 1)
+                || fillBy(predicate, 0, 0, 1, 1)
+                || fillBy(predicate, 2, 0, -1, 1);
+    }
+
     public boolean isWinnerX() {
-        return fillBy(Figure3T::hasMarkX, 0, 0, 1, 0)
-                || fillBy(Figure3T::hasMarkX, 0, 1, 1, 0)
-                || fillBy(Figure3T::hasMarkX, 0, 2, 1, 0)
-                || fillBy(Figure3T::hasMarkX, 0, 0, 1, 0)
-                || fillBy(Figure3T::hasMarkX, 1, 0, 0, 1)
-                || fillBy(Figure3T::hasMarkX, 2, 0, 0, 1)
-                || fillBy(Figure3T::hasMarkX, 0, 0, 1, 1)
-                || fillBy(Figure3T::hasMarkX, 2, 0, -1, 1);
+        return isWin(Figure3T::hasMarkX);
     }
 
     public boolean isWinnerO() {
-        return fillBy(Figure3T::hasMarkO, 0, 0, 1, 0)
-                || fillBy(Figure3T::hasMarkO, 0, 1, 1, 0)
-                || fillBy(Figure3T::hasMarkO, 0, 2, 1, 0)
-                || fillBy(Figure3T::hasMarkO, 0, 0, 1, 0)
-                || fillBy(Figure3T::hasMarkO, 1, 0, 0, 1)
-                || fillBy(Figure3T::hasMarkO, 2, 0, 0, 1)
-                || fillBy(Figure3T::hasMarkO, 0, 0, 1, 1)
-                || fillBy(Figure3T::hasMarkO, 2, 0, -1, 1);
+        return isWin(Figure3T::hasMarkO);
     }
 
     public boolean hasGap() {
-        return fillBy(figure3T -> figure3T.hasMarkX() || figure3T.hasMarkO(), 0, 0, 1, 0)
-                == new Figure3T().hasMarkX() || new Figure3T().hasMarkO()
-
-                || fillBy(figure3T -> figure3T.hasMarkX() || figure3T.hasMarkO(), 0, 1, 1, 0)
-                == new Figure3T().hasMarkX() || new Figure3T().hasMarkO()
-
-                || fillBy(figure3T -> figure3T.hasMarkX() || figure3T.hasMarkO(), 0, 2, 1, 0)
-                == new Figure3T().hasMarkX() || new Figure3T().hasMarkO();
+        return Arrays.stream(table).flatMap(Arrays::stream).allMatch(cell -> !cell.hasMarkO() && !cell.hasMarkX());
     }
 }
